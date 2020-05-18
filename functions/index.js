@@ -1,8 +1,15 @@
+// ----Access Firebase Functions----
 const functions = require('firebase-functions');
-// --- Software Development Kit (SDK) ---
+// ----Software Development Kit (SDK)----
 const admin = require ('firebase-admin');
+//----Express Framework----
+const express = require('express');
+const app = express();
 
-exports.getPosts = functions.https.onRequest((req, res) => {
+admin.initializeApp();
+
+// ----Grabs posts data from firestore database collections----
+app.get('/posts', (req, res) => {
   admin.firestore().collection('posts').get()
     .then(data => {
       let posts = [];
@@ -12,9 +19,10 @@ exports.getPosts = functions.https.onRequest((req, res) => {
       return res.json(posts);
     })
       .catch(err => console.error(err));
-});
+})
 
-exports.createPost = functions.https.onRequest((req, res) => {
+// ----Creates posts data to firestore database collections----
+app.post('/post', (req, res) => {
   const newPost = {
     body: req.body.body,
     userHandle: req.body.userHandle,
@@ -33,3 +41,5 @@ exports.createPost = functions.https.onRequest((req, res) => {
     console.error(err);
   })
 })
+
+exports.api = functions.https.onRequest(app);
