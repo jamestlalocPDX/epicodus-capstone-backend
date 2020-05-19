@@ -65,4 +65,4 @@ node_modules/
 .env
 
 # Sensitive SDK info
-.serviceAccountKey.json
+serviceAccountKey.json
