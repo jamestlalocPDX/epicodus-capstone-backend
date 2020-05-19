@@ -58,7 +58,7 @@ const FBAuth = (req, res, next) => {
     return res.status(403).json({ error: 'Unauthorized' });
   }
 
-  admin.auth().verifyIdToken(idtoken)
+  admin.auth().verifyIdToken(idToken)
   .then(decodedToken => {
     req.user = decodedToken;
     console.log(decodedToken);
