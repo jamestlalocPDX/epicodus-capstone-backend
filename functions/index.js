@@ -6,7 +6,13 @@ const admin = require('firebase-admin');
 const express = require('express');
 const app = express();
 
-admin.initializeApp();
+
+var serviceAccount = require("/home/user/Downloads/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://newco-5aacb.firebaseio.com"
+});
 
 // ----Route that grabs posts data from firestore database collections----
 app.get('/posts', (req, res) => {
