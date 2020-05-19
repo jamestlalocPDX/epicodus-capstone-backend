@@ -8,8 +8,8 @@ const app = require('express')();
 const FBAuth = require('./utility/fbAuth');
 
 //<----Import Route Modules------>
-const { getAllPosts, createPost} = require('./handlers/posts');
-const { signup, login, uploadImage, addUserInfo, getUser, getPost } = require('./handlers/users');
+const { getAllPosts, createPost, getPost } = require('./handlers/posts');
+const { signup, login, uploadImage, addUserInfo, getUser } = require('./handlers/users');
 
 // <-------- POST ROUTES -------->
 app.get('/posts', getAllPosts);
