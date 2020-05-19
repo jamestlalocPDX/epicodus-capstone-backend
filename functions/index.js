@@ -191,7 +191,11 @@ app.post('/login', (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      if(err.code === 'auth/wrong-password') {
+        return res.status(403).json({ general: "Your email or password is incorrect" })
+      } else {
       return res.status(500).json({ error: error.code })
+      }
     })
 })
 
