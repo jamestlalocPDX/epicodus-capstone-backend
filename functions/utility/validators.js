@@ -35,7 +35,7 @@ exports.validateSignupData = (data) => {
     if (isEmpty(data.handle)) {
       errors.handle = "Please enter a user handle."
     }
-    
+
     return {
       errors,
       valid: Object.keys(errors).length === 0 ? true : false
@@ -46,12 +46,12 @@ exports.validateLoginData = (data) => {
   let errors = {};
 
 // <---- Checks to see if email string is empty ---->
-  if(isEmpty(user.email)) {
+  if(isEmpty(data.email)) {
     errors.email = "Please enter an email."
   }
 
 // <---- Checks to see if password is empty ---->
-  if(isEmpty(user.password)) {
+  if(isEmpty(data.password)) {
     errors.password = "Please enter a password."
   }
 
