@@ -1,6 +1,6 @@
 const { admin, db } = require('../utility/admin');
 const config = require('../utility/config');
-const { validateSignupData, validateLoginData } = require('../utility/validators')
+const { validateSignupData, validateLoginData, reduceUserInfo } = require('../utility/validators')
 
 const firebase = require('firebase');
 firebase.initializeApp(config);
@@ -60,7 +60,7 @@ exports.signup = (req, res) => {
     })
 }
 
-// <----- AUT------>
+// <----- AUTHENTICATES A REGISTERED USER ------>
 exports.login = (req, res) => {
   const user = {
     email: req.body.email,
@@ -88,10 +88,21 @@ exports.login = (req, res) => {
     })
 }
 
+// <------ ADDS USER INFORMATION ------>
 exports.addUserInfo = (req, res) => {
+  let userInfo = reduceUserInfo(req.body);
 
+  db.doc(`/users/${req.user.handle}`).update(userInfo)
+    .then(() => {
+      return res.json({ message: 'Info has been successfully added' })
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code })
+    });
 }
 
+// <------ UPLOADS PROFILE IMAGE ------>
 exports.uploadImage = (req, res) => {
   const BusBoy = require('busboy');
   const path = require('path');
