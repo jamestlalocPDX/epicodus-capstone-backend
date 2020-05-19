@@ -48,7 +48,11 @@ exports.getPost = (req, res) => {
       }
       postData = doc.data();
       postData.postId = doc.id;
-      return db.collection('comments').where('postId', '==', req.params.postId).get();
+      return db
+      .collection('comments')
+      .orderBy('createdAt', 'desc')
+      .where('postId', '==', req.params.postId)
+      .get();
     })
     .then((data) => {
       postData.comments = [];
