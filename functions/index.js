@@ -19,6 +19,7 @@ app.get('/posts', (req, res) => {
   admin
   .firestore()
   .collection('posts')
+  .orderBy('createdAt', 'desc')
   .get()
     .then(data => {
       let posts = [];
