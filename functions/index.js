@@ -16,7 +16,10 @@ admin.initializeApp({
 
 // ----Route that grabs posts data from firestore database collections----
 app.get('/posts', (req, res) => {
-  admin.firestore().collection('posts').get()
+  admin
+  .firestore()
+  .collection('posts')
+  .get()
     .then(data => {
       let posts = [];
       data.forEach(doc => {
