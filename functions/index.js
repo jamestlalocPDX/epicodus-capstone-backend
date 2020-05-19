@@ -41,7 +41,7 @@ app.post('/post', (req, res) => {
   const newPost = {
     body: req.body.body,
     userHandle: req.body.userHandle,
-    createdAt: admin.firestore.Timestamp.fromDate(new Date())
+    createdAt: new Date().toISOString()
   };
 
   admin
