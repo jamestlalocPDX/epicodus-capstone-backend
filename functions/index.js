@@ -1,14 +1,14 @@
 // ----Access Firebase Functions----
 const functions = require('firebase-functions');
 // ----Software Development Kit (SDK)----
-const admin = require ('firebase-admin');
+const admin = require('firebase-admin');
 //----Express Framework----
 const express = require('express');
 const app = express();
 
 admin.initializeApp();
 
-// ----Grabs posts data from firestore database collections----
+// ----Route that grabs posts data from firestore database collections----
 app.get('/posts', (req, res) => {
   admin.firestore().collection('posts').get()
     .then(data => {
@@ -19,9 +19,9 @@ app.get('/posts', (req, res) => {
       return res.json(posts);
     })
       .catch(err => console.error(err));
-})
+});
 
-// ----Creates posts data to firestore database collections----
+// ----Route that creates posts data to firestore database collections----
 app.post('/post', (req, res) => {
   const newPost = {
     body: req.body.body,
@@ -33,7 +33,7 @@ app.post('/post', (req, res) => {
   .firestore()
   .collection('posts')
   .add(newPost)
-  .then(doc => {
+  .then((doc) => {
     res.json({ message: `document ${doc.id} created successfully` })
   })
   .catch((err) => {
