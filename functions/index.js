@@ -15,7 +15,8 @@ const { signup, login, uploadImage, addUserInfo } = require('./handlers/users');
 app.get('/posts', getAllPosts);
 app.post('/post', FBAuth, createPost);
 app.post('/user/image', FBAuth, uploadImage);
-app.post('/user', FBAuth, addUserInfo)
+app.post('/user', FBAuth, addUserInfo);
+app.get('/user', FBAuth, getUser);
 
 // <-------- USERS ROUTES -------->
 app.post('/signup', signup)
