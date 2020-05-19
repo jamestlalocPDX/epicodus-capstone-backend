@@ -5,6 +5,7 @@ const { validateSignupData, validateLoginData } = require('../utility/validators
 const firebase = require('firebase');
 firebase.initializeApp(config);
 
+// <------ REGISTERS A NEW USER ------>
 exports.signup = (req, res) => {
   const newUser = {
     email: req.body.email,
@@ -59,6 +60,7 @@ exports.signup = (req, res) => {
     })
 }
 
+// <----- AUT------>
 exports.login = (req, res) => {
   const user = {
     email: req.body.email,
@@ -69,7 +71,6 @@ exports.login = (req, res) => {
 
   if(!valid) return res.status(400).json(errors);
 
-// <----- Authenticates User ------>
   firebase.auth().signInWithEmailAndPassword(user.email, user.password)
     .then(data => {
       return data.user.getIdToken();
@@ -85,6 +86,10 @@ exports.login = (req, res) => {
       return res.status(500).json({ error: error.code })
       }
     })
+}
+
+exports.addUserInfo = (req, res) => {
+
 }
 
 exports.uploadImage = (req, res) => {
