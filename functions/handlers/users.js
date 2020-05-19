@@ -88,18 +88,42 @@ exports.login = (req, res) => {
     })
 }
 
+
 // <------ ADDS USER INFORMATION ------>
 exports.addUserInfo = (req, res) => {
   let userInfo = reduceUserInfo(req.body);
-
+  
   db.doc(`/users/${req.user.handle}`).update(userInfo)
-    .then(() => {
-      return res.json({ message: 'Info has been successfully added' })
-    })
-    .catch(err => {
-      console.error(err);
-      return res.status(500).json({ error: err.code })
+  .then(() => {
+    return res.json({ message: 'Info has been successfully added' })
+  })
+  .catch(err => {
+    console.error(err);
+    return res.status(500).json({ error: err.code })
+  });
+}
+
+// <------ GETS USER INFORMATION ------>
+exports.getUser = (req, res) => {
+  let resData = {};
+  db.doc(`/user/${req.user.handle}`).get()
+  .then((doc) => {
+    if(doc.exists) {
+      userData.credentials = doc.data();
+      return db.collection('likes').where('userHandle', '==', req/user.handle).get()
+    }
+  })
+  .then(data => {
+    userData.likes = [];
+    data.forEach(doc => {
+      userData.likes.push(doc.data());
     });
+    return res.json(userData);
+  })
+  .catch(err => {
+    console.error(err);
+    return res.status(500).json({ error: err.code })
+  })
 }
 
 // <------ UPLOADS PROFILE IMAGE ------>

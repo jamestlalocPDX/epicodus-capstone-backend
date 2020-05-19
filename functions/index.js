@@ -9,7 +9,7 @@ const FBAuth = require('./utility/fbAuth');
 
 //<----Import Route Modules------>
 const { getAllPosts, createPost} = require('./handlers/posts');
-const { signup, login, uploadImage, addUserInfo } = require('./handlers/users');
+const { signup, login, uploadImage, addUserInfo, getUser } = require('./handlers/users');
 
 // <-------- POST ROUTES -------->
 app.get('/posts', getAllPosts);
