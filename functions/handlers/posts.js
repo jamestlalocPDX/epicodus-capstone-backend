@@ -38,3 +38,26 @@ exports.createPost = (req, res) => {
     console.error(err);
   })
 }
+
+exports.getPost = (req, res) => {
+  let postData = {};
+  db.doc(`/posts/${req.params.postId}`).get()
+    .then((doc) => {
+      if(!doc.exists) {
+        return res.status(404).json({ error: "Post not found." })
+      }
+      postData = doc.data();
+      postData.postId = doc.id;
+      return db.collection('comments').where('postId', '==', req.params.postId).get();
+    })
+    .then((data) => {
+      postData.comments = [];
+      data.forEach((doc) => {
+        postData.push(doc.data());
+      })
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code })
+    })
+}
