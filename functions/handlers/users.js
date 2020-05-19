@@ -105,12 +105,12 @@ exports.addUserInfo = (req, res) => {
 
 // <------ GETS USER INFORMATION ------>
 exports.getUser = (req, res) => {
-  let resData = {};
-  db.doc(`/user/${req.user.handle}`).get()
+  let userData = {};
+  db.doc(`/users/${req.user.handle}`).get()
   .then((doc) => {
     if(doc.exists) {
       userData.credentials = doc.data();
-      return db.collection('likes').where('userHandle', '==', req/user.handle).get()
+      return db.collection('likes').where('userHandle', '==', req.user.handle).get()
     }
   })
   .then(data => {
