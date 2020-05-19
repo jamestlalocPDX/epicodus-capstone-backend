@@ -9,17 +9,18 @@ const FBAuth = require('./utility/fbAuth');
 
 //<----Import Route Modules------>
 const { getAllPosts, createPost} = require('./handlers/posts');
-const { signup, login, uploadImage, addUserInfo, getUser } = require('./handlers/users');
+const { signup, login, uploadImage, addUserInfo, getUser, getPost } = require('./handlers/users');
 
 // <-------- POST ROUTES -------->
 app.get('/posts', getAllPosts);
 app.post('/post', FBAuth, createPost);
-app.post('/user/image', FBAuth, uploadImage);
-app.post('/user', FBAuth, addUserInfo);
-app.get('/user', FBAuth, getUser);
+app.get('/post/:postId', getPost)
 
 // <-------- USERS ROUTES -------->
 app.post('/signup', signup)
 app.post('/login', login)
+app.post('/user/image', FBAuth, uploadImage);
+app.post('/user', FBAuth, addUserInfo);
+app.get('/user', FBAuth, getUser);
 
 exports.api = functions.https.onRequest(app);
