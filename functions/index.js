@@ -1,22 +1,29 @@
 // ----Access Firebase Functions----
+const firebase = require('firebase');
 const functions = require('firebase-functions');
 // ----Software Development Kit (SDK)----
 const admin = require('firebase-admin');
 //----Express Framework----
-const express = require('express');
-const app = express();
-
+const app = require('express')();
 
 var serviceAccount = require("./../serviceAccountKey.json");
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://newco-5aacb.firebaseio.com"
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://newco-5aacb.firebaseio.com"
+});
 
-const adminConfig = JSON.parse(process.env.FIREBASE_CONFIG);
-adminConfig.credential = admin.credential.cert(serviceAccount);
-admin.initializeApp(adminConfig);
+const firebaseConfig = {
+  apiKey: "AIzaSyADYr4zfxyYESkb574cznc0Njw4Drs82dY",
+  authDomain: "newco-5aacb.firebaseapp.com",
+  databaseURL: "https://newco-5aacb.firebaseio.com",
+  projectId: "newco-5aacb",
+  storageBucket: "newco-5aacb.appspot.com",
+  messagingSenderId: "946708994083",
+  appId: "1:946708994083:web:1be770fa0245de0a0cf996"
+};
+
+firebase.initializeApp(firebaseConfig)
 
 // ----Route that grabs posts data from firestore database collections----
 app.get('/posts', (req, res) => {
