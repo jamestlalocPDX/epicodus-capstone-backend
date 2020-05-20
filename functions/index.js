@@ -8,7 +8,7 @@ const app = require('express')();
 const FBAuth = require('./utility/fbAuth');
 
 //<----Import Route Modules------>
-const { getAllPosts, createPost, getPost, commentsOnPosts } = require('./handlers/posts');
+const { getAllPosts, createPost, getPost, commentsOnPosts, likePost, unlikePost } = require('./handlers/posts');
 const { signup, login, uploadImage, addUserInfo, getUser } = require('./handlers/users');
 
 // <-------- POST ROUTES -------->
@@ -16,6 +16,8 @@ app.get('/posts', getAllPosts);
 app.post('/post', FBAuth, createPost);
 app.get('/post/:postId', getPost);
 app.post('/post/:postId/comment', FBAuth, commentsOnPosts);
+app.get('/post/:postId/like', FBAuth, likePost);
+app.get('/post/:postId/unlike', FBAuth, unlikePost);
 
 // <-------- USERS ROUTES -------->
 app.post('/signup', signup)
