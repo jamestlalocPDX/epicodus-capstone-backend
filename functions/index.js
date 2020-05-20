@@ -16,7 +16,7 @@ app.get('/posts', getAllPosts);
 app.post('/post', FBAuth, createPost);
 app.get('/post/:postId', getPost);
 app.post('/post/:postId/comment', FBAuth, commentsOnPosts);
-app.get('/post/:postId', FBAuth, deletePost)
+app.delete('/post/:postId', FBAuth, deletePost)
 app.get('/post/:postId/like', FBAuth, likePost);
 app.get('/post/:postId/unlike', FBAuth, unlikePost);
 
