@@ -190,7 +190,7 @@ exports.deletePost = (req, res) => {
     if(!doc.exists) {
       return res.status(404).json({ error: "Post not found."});
     }
-    if(doc.data.userHandle !== req.user.handle) {
+    if(doc.data().userHandle !== req.user.handle) {
       return res.status(403).json({ error: "Unauthorized"});
     } else {
       return document.delete();
