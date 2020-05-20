@@ -8,6 +8,7 @@ const app = require('express')();
 const FBAuth = require('./utility/fbAuth');
 
 //<----Import Route Modules------>
+const { db } = require('./utility/admin');
 const { getAllPosts, createPost, getPost, commentsOnPosts, likePost, unlikePost, deletePost } = require('./handlers/posts');
 const { signup, login, uploadImage, addUserInfo, getUser } = require('./handlers/users');
 
@@ -28,3 +29,66 @@ app.post('/user', FBAuth, addUserInfo);
 app.get('/user', FBAuth, getUser);
 
 exports.api = functions.https.onRequest(app);
+
+exports.createNotificationOnLike = functions
+.firestore.document('likes/{id}')
+  .onCreate((snapshot) => {
+    db.doc(`/posts/${snapshot.data().postId}`)
+    .get()
+    .then((doc) => {
+      if(doc.exists) {
+        return db.doc(`/notifications/${snapshot.id}`).set({
+          createdAt: new Date().toISOString,
+          recipient: doc.data().userHandle,
+          sender: snapshot.data().userHandle,
+          type: 'like',
+          read: false,
+          postId: doc.id
+        })
+      }
+    })
+    .then(() => {
+      return;
+    })
+    .catch(err => {
+      console.error(err);
+      return;
+    })
+  });
+
+  exports.deleteNotificationOnUnlike = functions.firestore.document('likes/{id}')
+    .onDelete((snapshot) => {
+      db.doc(`/notifications/${snapshot.id}`)
+      .delete()
+      .then(() => {
+        return;
+      })
+      .catch(err => {
+        console.error(err);
+        return;
+      });
+    });
+
+  exports.createNotificationOnComment = functions.firestore.document('comments/{id}')
+  .onCreate((snapshot) => {
+    db.doc(`/posts/${snapshot.data().postId}`).get()
+    .then((doc) => {
+      if(doc.exists) {
+        return db.doc(`/notifications/${snapshot.id}`).set({
+          createdAt: new Date().toISOString,
+          recipient: doc.data().userHandle,
+          sender: snapshot.data().userHandle,
+          type: 'comment',
+          read: false,
+          postId: doc.id
+        })
+      }
+    })
+    .then(() => {
+      return;
+    })
+    .catch(err => {
+      console.error(err);
+      return;
+    })
+  });
