@@ -197,7 +197,7 @@ exports.deletePost = (req, res) => {
     }
   })
   .then(() => {
-    res.json.({ message: "Post deleted sucessfully"});
+    res.json({ message: "Post deleted sucessfully"});
   })
   .catch(err => {
     console.error(err);
