@@ -184,7 +184,7 @@ exports.unlikePost = (req, res) => {
 }
 
 exports.deletePost = (req, res) => {
-  const document = db.doc(`posts/${req.params.postId}`);
+  const document = db.doc(`/posts/${req.params.postId}`);
   document.get()
   .then(doc => {
     if(!doc.exists) {
