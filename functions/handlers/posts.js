@@ -12,7 +12,10 @@ exports.getAllPosts = (req, res) => {
           postId: doc.id,
           body: doc.data().body,
           userHandle: doc.data().userHandle,
-          createdAt: doc.data().createdAt
+          createdAt: doc.data().createdAt,
+          commentCount: doc.data().commentCount,
+          likeCount: doc.data().likeCount,
+          userImage: doc.data().userImage
         });
       });
       return res.json(posts);
@@ -74,7 +77,7 @@ exports.getPost = (req, res) => {
 
 exports.commentsOnPosts = (req, res) => {
   if(req.body.body.trim() === '') {
-    return res.status(400).json({ error: "Please enter a comment."})
+    return res.status(400).json({ comment: "Please enter a comment."})
   }
 
   const newComment = {
@@ -105,28 +108,34 @@ exports.commentsOnPosts = (req, res) => {
 }
 
 exports.likePost = (req, res) => {
-  const likeDocument = db.collection('likes').where('userHandle', '==', req.user.handle)
-    .where('postId', '==', req.params.postId).limit(1);
+  const likeDocument = db
+  .collection('likes')
+  .where('userHandle', '==', req.user.handle)
+  .where('postId', '==', req.params.postId)
+  .limit(1);
 
   const postDocument = db.doc(`/posts/${req.params.postId}`)
 
   let postData;
 
-  postDocument.get()
-    .then(doc => {
-      if(doc.exists) {
-        postData = doc.data();
-        postData.postId = doc.id;
-        return likeDocument.get();
-      } else {
-        return res.status(404).json({ error: "Post not found" })
-      }
-    })
-    .then( data => {
-      if(data.empty) {
-        return db.collection('likes').add({
-          postId: req.params.postId,
-          userhandle: req.user.handle
+  postDocument
+  .get()
+  .then((doc) => {
+    if(doc.exists) {
+      postData = doc.data();
+      postData.postId = doc.id;
+      return likeDocument.get();
+    } else {
+      return res.status(404).json({ error: "Post not found" })
+    }
+  })
+  .then((data) => {
+    if(data.empty) {
+      return db
+        .collection('likes')
+        .add({
+        postId: req.params.postId,
+        userhandle: req.user.handle
         })
         .then(() => {
           postData.likeCount++;
