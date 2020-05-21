@@ -23,9 +23,14 @@ Stretch goals include:
 * Videos / Images - A user will be able to post an image or a video.
 * Share - A user will be able to share someone else's post.
 
+## Preview
+<p align="center">
+  <img src="./img/previewImg.png">
+</p>
+
 ## Specifications
 <p align="center">
-  <img src="./src/img/component-tree.png">
+  <img src="./img/component-tree.png">
 </p> 
 
 ## **Setup/Installation**
